@@ -1,0 +1,10 @@
+^C:\USERS\SUNIO\DESKTOP\IMAGE PROCESSING LAB\LAB1\BUILD\CMAKEFILES\E738A059391C20F555DF7E7201C73EA7\GENERATE.STAMP.RULE
+setlocal
+C:\mingw64\bin\cmake.exe "-SC:/Users/sunio/Desktop/Image Processing Lab/Lab1" "-BC:/Users/sunio/Desktop/Image Processing Lab/Lab1/build" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/Users/sunio/Desktop/Image Processing Lab/Lab1/build/lab1.sln"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

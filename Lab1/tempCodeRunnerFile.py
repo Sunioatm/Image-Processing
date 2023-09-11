@@ -1,0 +1,1 @@
+(5 * L/6) + (slope * (enhanced_image[y, x] - (L/3))))
