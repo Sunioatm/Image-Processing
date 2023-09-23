@@ -1,29 +1,23 @@
 import numpy as np
 
-def local_histogram_equalization(image, ksize):
-    pad_size = ksize // 2
-    padded_img = np.pad(image, ((pad_size, pad_size), (pad_size, pad_size)), 'constant')
-    equalized_img = np.zeros_like(image)
-    
-    for i in range(image.shape[0]):
-        for j in range(image.shape[1]):
-            neighborhood = padded_img[i:i+ksize, j:j+ksize]
-            equalized_img[i, j] = global_histogram_equalization(neighborhood)[pad_size, pad_size]
-    
-    return equalized_img
+def local_histogram_equalization(img, kernel_size, k0, k1, k2):
+    half_size = kernel_size // 2
+    padded_img = np.pad(img, ((half_size, half_size), (half_size, half_size)), mode='reflect')
+    img_equalized = np.copy(img)
 
-def global_histogram_equalization(image):
-    # Compute the histogram of the image
-    hist, _ = np.histogram(image.flatten(), 256, [0,256])
-    
-    # Compute the cumulative distribution function (CDF)
-    cdf = hist.cumsum()
-    
-    # Normalize the CDF
-    cdf_normalized = ((cdf - cdf.min()) * 255) / (cdf.max() - cdf.min())
-    cdf_mapped = np.uint8(cdf_normalized)
-    
-    # Use the CDF to map the original pixel values to the equalized values
-    equalized_img = cdf_mapped[image]
-    
-    return equalized_img
+    global_mean = np.mean(img)
+    global_deviation = np.std(img)
+
+    for i in range(half_size, img.shape[0] - half_size):
+        for j in range(half_size, img.shape[1] - half_size):
+            local_region = padded_img[i-half_size:i+half_size+1, j-half_size:j+half_size+1]
+            local_mean = np.mean(local_region)
+            local_deviation = np.std(local_region)
+
+            if local_mean < k0 * global_mean and k1 * global_deviation <= local_deviation <= k2 * global_deviation:
+                hist, _ = np.histogram(local_region.flatten(), 256, [0, 256])
+                cdf = hist.cumsum()
+                cdf_normalized = (cdf - cdf.min()) * 255 / (cdf.max() - cdf.min())
+                img_equalized[i, j] = cdf_normalized[img[i, j]]
+
+    return img_equalized
