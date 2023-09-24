@@ -7,7 +7,7 @@ def global_histogram_equalization(img):
     # cumulative distribution function
     cdf = hist.cumsum()
     # print("cdf : \n",cdf)
-    cdf_normalized = ((cdf - cdf.min())* 255) / cdf[-1] #Normalize to range [0, 255]
+    cdf_normalized = ((cdf - cdf.min())* 255) / (cdf.max() - cdf.min()) #Normalize to range [0, 255]
     # print("cdf normalizaed : \n",cdf_normalized)
     img_equalized = cdf_normalized[img] # For each pixel in the img, find its corresponding equalized value in cdf_normalized.
     return img_equalized.astype(np.uint8)

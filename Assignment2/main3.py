@@ -2,8 +2,8 @@ import os
 import cv2
 import numpy as np
 
-def local_histogram_equalization(img, kernel_size=5, k0=0.4, k1=0.02, k2=0.4):
-    half_size = kernel_size // 2
+def local_histogram_equalization(img, neighborhood_size=3, k0=0.4, k1=0.02, k2=0.4):
+    half_size = neighborhood_size // 2
     # For edge of picture
     padded_img = np.pad(img, ((half_size, half_size), (half_size, half_size)), mode='reflect')
     img_equalized = np.copy(img)
