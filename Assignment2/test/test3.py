@@ -39,9 +39,9 @@ def local_histogram_equalization(img, kernel_size=3, k0=0.4, k1=0.02, k2=0.4):
             # print("global sd",global_deviation)
             # print("local sd",local_deviation)
 
-            k0 = 0.35
-            k1 = 0.02
-            k2 = 0.03
+            # k0 = 0.35
+            # k1 = 0.02
+            # k2 = 0.03
 
             if local_mean < k0 * global_mean and k1 * global_deviation <= local_deviation <= k2 * global_deviation:
                 hist, _ = np.histogram(local_region.flatten(), 256, [0, 256])
@@ -55,7 +55,7 @@ image_path = 'test.jpg'
 image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
 global_hist_equalized = global_histogram_equalization(image)
-local_hist_equalized_3x3 = local_histogram_equalization(image, 3)
+local_hist_equalized_3x3 = local_histogram_equalization(image, 3, 0.125, 0.01, 0.125)
 # local_hist_equalized_7x7 = local_histogram_equalization(image, 7)
 # local_hist_equalized_11x11 = local_histogram_equalization(image, 11)
 
